@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: appname
+  labels:
+    k8s-app: appname
+  annotations:
+    d-engine.ip6n.net/ipv4: "auto"
+    d-engine.ip6n.net/vs-http-desc: "HTTP traffic to appname"
+    d-engine.ip6n.net/vs-http-vsPort: "80"
+    d-engine.ip6n.net/vs-http-template: "vs-tcp"
+    d-engine.ip6n.net/vs-http-fwPermit: "0.0.0.0/0"
+spec:
+  selector:
+    k8s-app: appname
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP

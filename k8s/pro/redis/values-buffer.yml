@@ -1,0 +1,30 @@
+---
+idegarApp: "ELKARQ"
+
+replicas: 1
+
+esJavaOpts: "-Xmx7g -Xms7g"
+
+
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 8
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "8Gi"
+  limits:
+    cpu: "1000m"
+    memory: "8Gi"
+
+
+config:
+  storage: "8Gi"
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "standard"
+  memory: maxmemory 8gb
+  policy: maxmemory-policy allkeys-lru

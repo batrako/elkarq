@@ -1,0 +1,12 @@
+---
+elasticsearchURL: "https://es-pro-ELKARQ-svc:9200"
+
+replicas: 1
+
+resources:
+    requests:
+        cpu: "500m"
+        memory: "8Gi"
+    limits:
+        cpu: "1000m"
+        memory: "8Gi"

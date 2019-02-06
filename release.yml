@@ -1,0 +1,44 @@
+kind: CBKRelease
+apiVersion: apps.release.cbk.caas.alm/v1
+metadata:
+  name: ELKARQ
+  labels:
+    app: ELKARQ
+spec:
+  environments:
+  - name: pro
+    deploy:
+      charts: 
+        - name: redis
+          path: redis/redis.tgz
+          values: redis/values-.yml
+        - name: elasticsearch
+          path: elasticsearch/elasticsearch.tgz
+          values: elasticsearch/values-multi.yml
+        - name: logstash
+          path: logstash/logstash.tgz
+          values: logstash/values-parser.yml
+        - name: api-elk
+          path: api-elk/api-elk.tgz
+          values: api-elk/values-apielk.yml
+        - name: kibana
+          path: kibana/kibana.tgz
+          values: kibana/values-multi.yml
+  - name: pre
+    deploy:
+      charts:
+        - name: redis
+          path: redis/redis.tgz
+          values: redis/values-buffer.yml
+        - name: elasticsearch
+          path: elasticsearch/elasticsearch.tgz
+          values: elastic/values-multi.yml
+        - name: logstash
+          path: logstash/redis.tgz
+          values: logstash/values-parser.yml
+        - name: api-elk
+          path: api-elk/api-elk.tgz
+          values: api-elk/values-apielk.yml
+        - name: kibana
+          path: kibana/kibana.tgz
+          values: kibana/values-visualizer.yml

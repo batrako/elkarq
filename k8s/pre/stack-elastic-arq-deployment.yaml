@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: app-name
+  labels:
+    k8s-app: app-name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: app-name
+  template:
+    metadata:
+      labels:
+        k8s-app: app-name
+    spec:
+      containers:
+      - image: pro-registry.local.caas.caixabank.com/appname:latest
+        name: app-name
+        ports:
+        - containerPort: 80
+        imagePullSecrets:
+      - name: registry-key
+

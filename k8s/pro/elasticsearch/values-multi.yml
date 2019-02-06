@@ -1,0 +1,66 @@
+---
+idegarApp: "ELKARQ"
+clusterName: "ESELKARQ01"
+nodeGroup: "multi"
+nodePort: "enabled"
+
+# The service that non master groups will try to connect to when joining the cluster
+# This should be set to clusterName + "-" + nodeGroup for your master group
+masterService: "eselkarq01-master"
+
+# Elasticsearch roles that will be applied to this nodeGroup
+# These will be set as environment variables. E.g. node.master=true
+roles:
+    master: "true"
+    ingest: "true"
+    data: "true"
+
+replicas: 4
+minimumMasterNodes: 3
+
+esJavaOpts: "-Xmx16g -Xms16g"
+
+resources:
+    requests:
+        cpu: "1000m"
+        memory: "32Gi"
+    limits:
+        cpu: "2000m"
+        memory: "32Gi"
+
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 300Gi
+
+
+
+# x-pack security configuration when enabled
+secretMounts:
+  - name: elastic-certificates-ELKARQ
+    secretName: elastic-certificates-ELKARQ.lower()
+    path: /usr/share/elasticsearch/config/certs
+
+extraEnvs:
+  - name: 'xpack.security.enabled'
+    value: 'true'
+  - name: 'xpack.security.transport.ssl.enabled'
+    value: 'true'
+  - name: 'xpack.security.transport.ssl.verification_mode'
+    value: 'certificate'
+  - name: 'xpack.security.transport.ssl.keystore.path'
+    value: '/usr/share/elasticsearch/config/certs/elastic-certificates.p12'
+  - name: 'xpack.security.transport.ssl.truststore.path'
+    value: '/usr/share/elasticsearch/config/certs/elastic-certificates.p12'
+  - name: ELASTIC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: elastic-credentials-ELKARQ.lower()
+        key: password
+  - name: ELASTIC_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: elastic-credentials-ELKARQ.lower()
+        key: username
